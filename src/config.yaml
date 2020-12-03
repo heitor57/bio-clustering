@@ -1,0 +1,28 @@
+cross_policy:
+  TwoPointCross:
+  BLXa:
+    alpha: 0.5
+  BLXab:
+    alpha: 0.75
+    beta: 0.25
+algorithms:
+  ga:
+    mutation_policy: "UniformRandomDiscreteSolutionSpace"
+    cross_policy: "TwoPointCross"
+    selection_policy: "Roulette"
+    population_size: 100 # Population size
+    num_generations: 100 # Number of generations
+    cross_rate: 1.0 # Rate of individuals who are going to be crossed instead of being preserved from previous generation, commonly it is going to stay in 1.0 but to be more flexible it is presented as a variable
+    elitism: True
+    mutation_rate: 0.10
+    eid: 1
+general:
+  logging_level: INFO
+# CRITICAL
+# ERROR
+# WARNING
+# INFO
+# DEBUG
+# NOTSET
+parameters:
+  instance_name: "iris.data"
