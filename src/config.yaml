@@ -1,5 +1,6 @@
 cross_policy:
   TwoPointCross:
+  PointCross:
   BLXa:
     alpha: 0.5
   BLXab:
@@ -10,11 +11,11 @@ algorithms:
     mutation_policy: "UniformRandomDiscreteSolutionSpace"
     cross_policy: "TwoPointCross"
     selection_policy: "Roulette"
-    population_size: 100 # Population size
-    num_generations: 100 # Number of generations
+    population_size: 50 # Population size
+    num_generations: 2000 # Number of generations
     cross_rate: 1.0 # Rate of individuals who are going to be crossed instead of being preserved from previous generation, commonly it is going to stay in 1.0 but to be more flexible it is presented as a variable
     elitism: True
-    mutation_rate: 0.10
+    mutation_rate: 0.0058
     eid: 1
 general:
   logging_level: INFO

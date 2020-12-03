@@ -15,9 +15,15 @@ from tqdm import tqdm
 
 from lib.utils import *
 from lib.ClassificationProblem import *
+from lib.objectives import *
+from .cross_policy import *
+from .mutation_policy import *
+from .selection_policy import *
+from lib.ParametricAlgorithm import *
+import sklearn.metrics
 
 
-class GA:
+class GA(ParametricAlgorithm):
     def __init__(self, population_size, cross_rate, num_generations, elitism, mutation_rate,instance_name,mutation_policy,cross_policy,selection_policy,cross_policy_kwargs,eid):
         self.population_size= population_size
         self.cross_rate=cross_rate
@@ -37,31 +43,36 @@ class GA:
 
         classification_problem = ClassificationProblem()
         classification_problem.load(DIRS['INPUTS']+self.instance_name)
-        num_labels = len(set(classification_problem.labels))
-        objective = InertiaObjective(classification_problem.features,num_labels)
+        num_classes =classification_problem.num_classes
+        objective = InertiaObjective(classification_problem.points,num_classes)
         cross_policy = eval(self.cross_policy)(**self.cross_policy_kwargs)
-        mutation_policy = eval(self.mutation_policy)(mutation_rate,0,num_labels-1)
+        mutation_policy = eval(self.mutation_policy)(self.mutation_rate,0,num_classes-1)
         
         population = []
-        for i in range(num_pop):
+        for i in range(self.population_size):
             ind = Individual()
-            ind.rand_genome_int(len(classification_problem.weights))
+            ind.rand_genome_int(num_classes,len(classification_problem.points))
+            ind.objective_value = objective.compute(ind.genome)
             population.append(ind)
-            objective.compute(ind)
 
         columns = ['#Iterations','Best global fitness','Best fitness','Mean fitness', 'Median fitness', 'Worst fitness']
         df = pd.DataFrame([],columns = columns)
         df = df.set_index(columns[0])
         objective_values = [ind.objective_value for ind in population]
+
         best_ind = population[np.argmin(objective_values)]
         best_objective_value = np.min(objective_values)
-        df.loc[1] = [f'{np.min(objective_values):.4E}',f'{best_objective_value:.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
+        df.loc[1] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
+
+        logger = logging.getLogger('default')
         if logger.level <= logging.INFO:
             progress_bar = tqdm
         else:
             progress_bar = lambda x: x
 
-        for i in progress_bar(range(2,self.num_generations+1)):
+        for i in progress_bar(range(1,self.num_generations+1)):
+            if i == 1:
+                continue
             new_population = []
             # Cross
             selection_policy=eval(self.selection_policy)(population)
@@ -72,26 +83,31 @@ class GA:
                 new_population.append(nind1)
                 new_population.append(nind2)
                 # Select the rest left of individuals if the cross rate is not 100%
-            new_population.extend([population[i].__copy__()
-                                   for i in random.sample(list(range(len(population))),num_no_cross)])
+            new_population.extend([population[j].__copy__()
+                                   for j in random.sample(list(range(len(population))),num_no_cross)])
 
             # Mutate these new individuals - Mutation
-            for j in range(num_pop):
+            for j in range(self.population_size):
                 mutation_policy.mutate(new_population[j])
 
             # Select best individual from previous population - Elitism
-            if elitism:
+            if self.elitism:
                 new_population[random.randint(0,len(new_population)-1)]=best_ind.__copy__()
                 population = new_population
 
             for ind in population:
-                objective.compute(ind.genome)
+                ind.objective_value = objective.compute(ind.genome)
 
             objective_values = [ind.objective_value for ind in population]
-            best_objective_value = np.min(np.min(objective_values),best_objective_value)
+            best_objective_value = min(np.min(objective_values),best_objective_value)
 
             best_ind = population[np.argmin(objective_values)]
-            df.loc[i] = [f'{np.min(objective_values):.4E}',f'{best_objective_value:.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
+            df.loc[i] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
+
+        # print(np.sum(np.where(best_ind.genome==classification_problem.labels,True,False))/len(classification_problem.labels))
+        logger.info(f"\n{np.sum(best_ind.genome==classification_problem.classes)/len(classification_problem.labels)}")
+        logger.info(f"\n{sklearn.metrics.classification_report(classification_problem.classes,best_ind.genome)}")
+        
 
         logger.info(f"\n{df}")
         self.save_results(df)

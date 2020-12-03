@@ -60,13 +60,13 @@ class PointCross(CrossPolicy):
         # nind2= Individual(genome=np.zeros(len(ind1.genome),dtype=np.bool))
         idx = random.randint(1,len(ind1.genome)-2)
 
-        new_genome = np.zeros(len(ind1.genome))
+        new_genome = copy.copy(ind1.genome)
         new_genome[:idx] = ind1.genome[:idx]
         new_genome[idx:] = ind2.genome[idx:]
         # new_genome = np.append(new_genome,ind2.genome[idx:])
         nind1 = Individual(new_genome)
 
-        new_genome = np.zeros(len(ind1.genome))
+        new_genome = copy.copy(ind1.genome)
         new_genome[:idx] = ind2.genome[:idx]
         new_genome[idx:] = ind1.genome[idx:]
         # new_genome = ind2.genome[:idx]

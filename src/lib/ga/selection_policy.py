@@ -32,8 +32,10 @@ class Roulette(SelectionPolicy):
     def __init__(self,population):
         super().__init__(population)
         objective_values = np.array([ind.objective_value for ind in self.population])
-        objective_values = 1/(objective_values+np.finfo(objective_values.dtype).min)
+        # objective_values = 1/(objective_values+np.finfo(objective_values.dtype).min)
+        objective_values = 1/objective_values
         self.probabilities = objective_values/np.sum(objective_values)
+        # print(self.probabilities)
     def select(self):
         r = np.random.random()
         cumulated = 0

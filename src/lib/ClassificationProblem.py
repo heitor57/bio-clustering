@@ -4,15 +4,21 @@ class ClassificationProblem:
         pass
 
     def load(self,instance_name):
-        self.features = []
+        self.points = []
         self.labels = []
         for line in open(instance_name):
-            l = line.split(',')
-            self.features.append(l[:-1])
-            self.labels.append(l[-1])
-        self.features = np.array(self.features)
+            if line!='\n':
+                l = line.split(',')
+                self.points.append(list(map(float,l[:-1])))
+                self.labels.append(l[-1])
+        self.points = np.array(self.points)
+
+        self.label_to_class = {label: i for i, label in enumerate(set(self.labels))}
+        self.classes = np.array([self.label_to_class[l] for l in self.labels])
+
+        self.num_classes = len(set(self.classes))
         
     def __str__(self):
-        return f"""{self.features}
+        return f"""{self.points}
 {self.labels}
 """

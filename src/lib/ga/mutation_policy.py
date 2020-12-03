@@ -10,9 +10,9 @@ class UniformRandomDiscreteSolutionSpace(MutationPolicy):
         self.max_value = max_value
     
     def mutate(self,ind):
-        new_genome = [random.randint(self.min_value,self.max_value)
+        new_genome = np.array([random.randint(self.min_value,self.max_value)
                       if self.probability > random.random()
                       else
                       i
-                      for i in ind.genome]
+                      for i in ind.genome])
         ind.genome = new_genome
