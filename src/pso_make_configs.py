@@ -28,7 +28,7 @@ f = open(args.config_file)
 config = OrderedDict(yaml.load(f,Loader=loader))
 
 to_search = {
-    'algorithms':{'pso':{
+    'algorithms':{'pso':
                   {"c_1": [0.5,1,1.5,2],
                   "c_2": [0.5,1,1.5,2],
                   "w": [0.4,0.6,0.8],
