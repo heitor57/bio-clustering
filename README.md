@@ -1,10 +1,14 @@
-# Particle Swarm Optimization
+# Solving Clustering
 
-## Configuration
+## Genetic Algorithm
+
+## Particle Swarm Optimization
+
+### Configuration
 
 Just edit src/config.yaml for settings.
 
-## Usage
+### Usage
 
 You can see the usage passing the argument --help in pso.py
 ```sh
