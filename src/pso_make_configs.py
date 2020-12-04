@@ -28,12 +28,12 @@ f = open(args.config_file)
 config = OrderedDict(yaml.load(f,Loader=loader))
 
 to_search = {
-    'parameters':{"c_1": [0.5,1,1.5,2],
-                  "c_2": [0.5,1,1.5,2],
+    'algorithms':{'pso':{
+                  # {"c_1": [0.5,1,1.5,2],
+                  # "c_2": [0.5,1,1.5,2],
                   "w": [0.4,0.6,0.8],
-                  "eid": list(range(1,NUM_EXECUTIONS+1)),
-                  "topology": ["VonNeumannTopology"],
-                  },
+                  # "eid": list(range(1,NUM_EXECUTIONS+1)),
+                  }},
 }
 
 keys_to_value, combinations=utils.get_names_combinations(config,to_search)
