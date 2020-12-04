@@ -45,12 +45,13 @@ class GA(ParametricAlgorithm):
         problem_instance.load(DIRS['INPUTS']+self.instance_name)
         num_classes = problem_instance.num_classes
         objective = InertiaObjective(problem_instance.points,num_classes)
-        mutation_policy = eval(self.mutation_policy)(self.mutation_rate,0,num_classes-1)
         
         dimensions = (problem_instance.num_classes,problem_instance.num_features)
         num_dimensions = np.prod(dimensions)
         features_min = np.tile(np.min(problem_instance.points,axis=0),problem_instance.num_classes)
         features_max = np.tile(np.max(problem_instance.points,axis=0),problem_instance.num_classes)
+
+        mutation_policy = eval(self.mutation_policy)(self.mutation_rate,features_min,features_max)
 
         cross_policy = eval(self.cross_policy)(**self.cross_policy_kwargs,min_values=features_min,max_values=features_max)
 

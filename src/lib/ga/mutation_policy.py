@@ -19,17 +19,17 @@ class UniformRandomDiscreteSolutionSpace(MutationPolicy):
 
 
 class UniformRandomSolutionSpace(MutationPolicy):
-    def __init__(self,probability,min_value,max_value):
+    def __init__(self,probability,min_values,max_values):
         self.probability = probability
-        self.min_value = min_value
-        self.max_value = max_value
+        self.min_values = min_values
+        self.max_values = max_values
 
     def mutate(self,ind):
-        new_genome = np.array([random.uniform(self.min_value,self.max_value)
-                      if self.probability > random.random()
-                      else
-                      i
-                      for i in ind.genome])
+        new_genome = np.array([random.uniform(self.min_values[i],self.max_values[i])
+                               if self.probability > random.random()
+                               else
+                               gene
+                               for i, gene in enumerate(ind.genome)])
         ind.genome = new_genome
 
 
