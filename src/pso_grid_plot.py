@@ -60,7 +60,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     a=result_df.groupby(list(set(result_df.columns)-{'Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness', 'eid'})).\
         agg({i: ['mean','std'] for i in {'Best global fitness', 'Best fitness','Mean fitness','Median fitness','Worst fitness', 'eid'}}).\
         sort_values(by=[('Best global fitness','mean')],ascending=True).reset_index()[tmp+['Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness',]].head(TOP_N)
-    open(f"../doc/{config['parameters']['instance_name']}_output.xlsx",'w').write(a.to_excel())
+    open(f"../doc/{config['parameters']['instance_name']}_output.xlsx",'w+').write(a.to_excel())
 
 
 # print('Top mean fitness')
