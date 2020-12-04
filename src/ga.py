@@ -13,7 +13,6 @@ cross_policy_kwargs = config['cross_policy'][config['algorithms']['ga']['cross_p
 cross_policy_kwargs= cross_policy_kwargs if cross_policy_kwargs else dict()
 ga = GA(**config['algorithms']['ga'],**config['parameters'],
         cross_policy_kwargs=cross_policy_kwargs)
-print(ga.__dict__)
 logging.basicConfig()
 logger = logging.getLogger('default')
 logger.setLevel(eval(f"logging.{config['general']['logging_level']}"))
