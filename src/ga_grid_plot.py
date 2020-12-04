@@ -10,6 +10,7 @@ import pandas as pd
 
 from lib.constants import *
 from lib.utils import *
+from lib.ga.GA import *
 TOP_N = 15
 
 config = parameters_init()
