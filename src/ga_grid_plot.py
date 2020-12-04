@@ -41,8 +41,11 @@ for combination in combinations:
 
         result_df.loc[i,keys[-1]] = v
         
-    pso = PSO(**config['algorithms']['pso'],**config['parameters'])
-    df = pso.load_results()
+    cross_policy_kwargs = config['cross_policy'][config['algorithms']['ga']['cross_policy']]
+    cross_policy_kwargs= cross_policy_kwargs if cross_policy_kwargs else dict()
+    ga = GA(**config['algorithms']['ga'],**config['parameters'],
+            cross_policy_kwargs=cross_policy_kwargs)
+    df = ga.load_results()
     result_df.loc[i,parameters_names] = combination
     result_df.loc[i,'Best global fitness'] = df.iloc[-1]['Best global fitness']
     result_df.loc[i,'Best fitness'] = df.iloc[-1]['Best fitness']
