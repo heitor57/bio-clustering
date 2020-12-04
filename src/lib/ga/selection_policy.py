@@ -1,5 +1,5 @@
 import sys
-
+import random
 import numpy as np
 
 class SelectionPolicy:
@@ -9,6 +9,7 @@ class SelectionPolicy:
 class Tournament(SelectionPolicy):
     def select(self):
         population=self.population
+        num_pop = len(self.population)
         fathers = []
         for i in range(2):
             inds = []
