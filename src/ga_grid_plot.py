@@ -60,7 +60,7 @@ result_df['eid']=pd.to_numeric(result_df['eid'])
 
 
 
-writer = pd.ExcelWriter(f"{DIRS['DATA']}{config['parameters']['instance_name']}_output.xls")
+writer = pd.ExcelWriter(f"{DIRS['DATA']}{config['parameters']['instance_name']}_ga_output.xls")
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     # print(result_df)

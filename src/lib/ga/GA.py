@@ -37,6 +37,7 @@ class GA(ParametricAlgorithm):
         self.mutation_policy = mutation_policy
         self.selection_policy = selection_policy
         self.cross_policy_kwargs = cross_policy_kwargs
+        self.eid = eid
 
     def run(self):
         num_cross = int((self.cross_rate * self.population_size)/2)
