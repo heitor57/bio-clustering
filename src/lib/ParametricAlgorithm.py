@@ -29,5 +29,5 @@ class ParametricAlgorithm:
 
     def load_results(self):
         string = self.get_name()
-        print(string)
+        # print(string)
         return pd.read_json(string)
