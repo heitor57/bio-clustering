@@ -23,6 +23,10 @@ algorithms:
     num_particles: 50
     num_iterations: 100
     topology: "VonNeumannTopology"
+  kmeans:
+    init: random
+    n_init: 1
+    max_iter: 100
 general:
   logging_level: INFO
 # CRITICAL
