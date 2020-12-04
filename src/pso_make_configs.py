@@ -6,6 +6,7 @@ import lib.utils as utils
 from lib.constants import *
 from collections import OrderedDict
 import lib.utils as utils
+import shlex
 
 config = utils.parameters_init()
 
@@ -20,6 +21,7 @@ to_search = {
     }
 }
 
+shlex.split(f"rm {DIRS['CONFIGS']}*")
 keys_to_value, combinations=utils.get_names_combinations(config,to_search)
 i = 0
 for combination in combinations:
