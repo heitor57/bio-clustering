@@ -43,16 +43,22 @@ class GA(ParametricAlgorithm):
 
         problem_instance = ClassificationProblem()
         problem_instance.load(DIRS['INPUTS']+self.instance_name)
-        num_classes =problem_instance.num_classes
+        num_classes = problem_instance.num_classes
         objective = InertiaObjective(problem_instance.points,num_classes)
-        cross_policy = eval(self.cross_policy)(**self.cross_policy_kwargs)
         mutation_policy = eval(self.mutation_policy)(self.mutation_rate,0,num_classes-1)
         
+        dimensions = (problem_instance.num_classes,problem_instance.num_features)
+        num_dimensions = np.prod(dimensions)
+        features_min = np.tile(np.min(problem_instance.points,axis=0),problem_instance.num_classes)
+        features_max = np.tile(np.max(problem_instance.points,axis=0),problem_instance.num_classes)
+
+        cross_policy = eval(self.cross_policy)(**self.cross_policy_kwargs,min_values=features_min,max_values=features_max)
+
         population = []
         for i in range(self.population_size):
             ind = Individual()
-            ind.rand_genome_int(num_classes,len(problem_instance.points))
-            ind.objective_value = objective.compute(ind.genome)
+            ind.genome = np.random.random_sample(num_dimensions)*(features_max-features_min)+features_min
+            ind.objective_value = objective.compute(centroids=ind.genome.reshape(dimensions))
             population.append(ind)
 
         columns = ['#Iterations','Best global fitness','Best fitness','Mean fitness', 'Median fitness', 'Worst fitness']
@@ -96,7 +102,7 @@ class GA(ParametricAlgorithm):
                 population = new_population
 
             for ind in population:
-                ind.objective_value = objective.compute(ind.genome)
+                ind.objective_value = objective.compute(centroids=ind.genome.reshape(dimensions))
 
             objective_values = [ind.objective_value for ind in population]
             best_objective_value = min(np.min(objective_values),best_objective_value)

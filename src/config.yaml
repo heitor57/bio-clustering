@@ -8,8 +8,8 @@ cross_policy:
     beta: 0.25
 algorithms:
   ga:
-    mutation_policy: "UniformRandomDiscreteSolutionSpace"
-    cross_policy: "TwoPointCross"
+    mutation_policy: "UniformRandomSolutionSpace"
+    cross_policy: "BLXab"
     selection_policy: "Roulette"
     population_size: 50 # Population size
     num_generations: 2000 # Number of generations

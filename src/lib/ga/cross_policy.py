@@ -6,30 +6,30 @@ class CrossPolicy:
     pass
 
 class BLXa(CrossPolicy):
-    def __init__(self,min_value,max_value,alpha):
+    def __init__(self,min_values,max_values,alpha):
         self.alpha=alpha
-        self.min_value=min_value
-        self.max_value=max_value
+        self.min_values=min_values
+        self.max_values=max_values
     def cross(self,ind1,ind2):
         nind1= Individual(genome=[0]*len(ind1.genome))
         nind2= Individual(genome=[0]*len(ind1.genome))
         i = 0
         for gene1, gene2 in zip(ind1.genome,ind2.genome):
             d= abs(gene1-gene2)
-            min_value = min(gene1,gene2)
-            max_value = max(gene1,gene2)
-            nind1.genome[i] = min(max(random.uniform(min_value-self.alpha*d,max_value+self.alpha*d),self.min_value),self.max_value)
-            nind2.genome[i] = min(max(random.uniform(min_value-self.alpha*d,max_value+self.alpha*d),self.min_value),self.max_value)
+            min_values = min(gene1,gene2)
+            max_values = max(gene1,gene2)
+            nind1.genome[i] = min(max(random.uniform(min_values-self.alpha*d,max_values+self.alpha*d),self.min_values[i]),self.max_values[i])
+            nind2.genome[i] = min(max(random.uniform(min_values-self.alpha*d,max_values+self.alpha*d),self.min_values[i]),self.max_values[i])
             i+=1
 
         return nind1, nind2
 
 class BLXab(CrossPolicy):
-    def __init__(self,min_value,max_value,alpha,beta):
+    def __init__(self,min_values,max_values,alpha,beta):
         self.alpha=alpha
         self.beta=beta
-        self.min_value=min_value
-        self.max_value=max_value
+        self.min_values=min_values
+        self.max_values=max_values
 
     def cross(self,ind1,ind2):
         nind1= Individual(genome=[0]*len(ind1.genome))
@@ -41,13 +41,15 @@ class BLXab(CrossPolicy):
         for gene1, gene2 in zip(ind1.genome,ind2.genome):
             d= abs(gene1-gene2)
             if gene1 <= gene2:
-                nind1.genome[i]=min(max(random.uniform(gene1-self.alpha*d,gene2+self.beta*d),self.min_value),self.max_value)
-                nind2.genome[i]=min(max(random.uniform(gene1-self.alpha*d,gene2+self.beta*d),self.min_value),self.max_value)
+                nind1.genome[i]=min(max(random.uniform(gene1-self.alpha*d,gene2+self.beta*d),self.min_values[i]),self.max_values[i])
+                nind2.genome[i]=min(max(random.uniform(gene1-self.alpha*d,gene2+self.beta*d),self.min_values[i]),self.max_values[i])
             else:
-                nind1.genome[i]=min(max(random.uniform(gene2-self.beta*d,gene1+self.alpha*d),self.min_value),self.max_value)
-                nind2.genome[i]=min(max(random.uniform(gene2-self.beta*d,gene1+self.alpha*d),self.min_value),self.max_value)
+                nind1.genome[i]=min(max(random.uniform(gene2-self.beta*d,gene1+self.alpha*d),self.min_values[i]),self.max_values[i])
+                nind2.genome[i]=min(max(random.uniform(gene2-self.beta*d,gene1+self.alpha*d),self.min_values[i]),self.max_values[i])
             i+=1
 
+        nind1.genome=np.array(nind1.genome)
+        nind2.genome=np.array(nind2.genome)
         return nind1, nind2
 
 
