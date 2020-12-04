@@ -55,7 +55,7 @@ result_df['eid']=pd.to_numeric(result_df['eid'])
 
 
 
-writer = pd.ExcelWriter(f"{DIRS['DATA']}{config['parameters']['instance_name']}_output.xlsx")
+writer = pd.ExcelWriter(f"{DIRS['DATA']}{config['parameters']['instance_name']}_output.xls")
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     # print(result_df)
@@ -66,6 +66,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         agg({i: ['mean','std'] for i in {'Best global fitness', 'Best fitness','Mean fitness','Median fitness','Worst fitness', 'eid'}}).\
         sort_values(by=[('Best global fitness','mean')],ascending=True).reset_index()[tmp+['Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness',]].head(TOP_N)
     a.to_excel(writer)
+    writer.close()
 
 
 # print('Top mean fitness')
