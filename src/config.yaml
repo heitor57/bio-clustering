@@ -21,10 +21,10 @@ algorithms:
     c_1: 1.49
     c_2: 1.49
     num_particles: 50
-    num_iterations: 200
+    num_iterations: 100
     topology: "VonNeumannTopology"
 general:
-  logging_level: WARNING
+  logging_level: INFO
 # CRITICAL
 # ERROR
 # WARNING
