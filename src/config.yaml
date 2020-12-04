@@ -36,5 +36,5 @@ general:
 # DEBUG
 # NOTSET
 parameters:
-  instance_name: "iris.data"
+  instance_name: "bupa.data"
   eid: 1
