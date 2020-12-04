@@ -52,6 +52,11 @@ for combination in combinations:
 
 result_df['eid']=pd.to_numeric(result_df['eid'])
 # print('Top best fitness')
+
+
+
+writer = ExcelWriter(f"{DIRS['DATA']}{config['parameters']['instance_name']}_output.xlsx")
+
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     # print(result_df)
     pd.set_option('display.expand_frame_repr', False)
@@ -60,7 +65,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     a=result_df.groupby(list(set(result_df.columns)-{'Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness', 'eid'})).\
         agg({i: ['mean','std'] for i in {'Best global fitness', 'Best fitness','Mean fitness','Median fitness','Worst fitness', 'eid'}}).\
         sort_values(by=[('Best global fitness','mean')],ascending=True).reset_index()[tmp+['Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness',]].head(TOP_N)
-    open(f"{DIRS['DATA']}{config['parameters']['instance_name']}_output.xlsx",'w+').write(a.to_excel())
+    a.to_excel(writer)
 
 
 # print('Top mean fitness')
