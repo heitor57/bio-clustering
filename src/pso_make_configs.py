@@ -5,27 +5,9 @@ import itertools
 import lib.utils as utils
 from lib.constants import *
 from collections import OrderedDict
+import lib.utils as utils
 
-loader = yaml.SafeLoader
-loader.add_implicit_resolver(
-    u'tag:yaml.org,2002:float',
-    re.compile(u'''^(?:
-        [-+]?(?:[0-9][0-9_]*)\\.[0-9_]*(?:[eE][-+]?[0-9]+)?
-        |[-+]?(?:[0-9][0-9_]*)(?:[eE][-+]?[0-9]+)
-        |\\.[0-9_]+(?:[eE][-+][0-9]+)?
-        |[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*
-        |[-+]?\\.(?:inf|Inf|INF)
-        |\\.(?:nan|NaN|NAN))$''', re.X),
-    list(u'-+0123456789.'))
-parser = argparse.ArgumentParser()
-parser.add_argument('--config_file','-c',
-                    default="config.yaml",
-                    type=str,
-                    help="Configuration file.")
-
-args = parser.parse_args()
-f = open(args.config_file)
-config = OrderedDict(yaml.load(f,Loader=loader))
+config = utils.parameters_init()
 
 to_search = {
     'algorithms':{'pso':
