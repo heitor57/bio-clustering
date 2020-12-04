@@ -23,6 +23,7 @@ from lib.ClassificationProblem import ClassificationProblem
 from lib.ParametricAlgorithm import ParametricAlgorithm
 from lib.objectives import *
 import sklearn.metrics
+import lib.metrics as metrics
 
 class PSO(ParametricAlgorithm):
     def __init__(self, w, c_1, c_2,num_particles,num_iterations, instance_name, eid,topology):
@@ -53,7 +54,7 @@ class PSO(ParametricAlgorithm):
             topology.update_neighborhood_best(i,particles[i])
             
         global_best_particle = np.argmin([p.objective_value for p in particles])
-        columns = ['#Iterations','Best global fitness','Best fitness','Mean fitness', 'Median fitness', 'Worst fitness']
+        columns = ['#Iterations','Best global fitness','Best fitness','Mean fitness', 'Median fitness', 'Worst fitness','Precision']
         df = pd.DataFrame([],columns = columns)
         df = df.set_index(columns[0])
 
@@ -81,12 +82,17 @@ class PSO(ParametricAlgorithm):
                         global_best_particle = j
             
             objective_values = [p.objective_value for p in particles]
-            df.loc[i] = [f'{particles[global_best_particle].best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
+            tfpn=metrics.clustering_tfpn(problem_instance.classes,compute_classifications(particles[global_best_particle].best_position,problem_instance.points))
+            precision = metrics.precision(tfpn['tp'],tfpn['fp'])
+            df.loc[i] = [f'{particles[global_best_particle].best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}',f'{precision:.4E}']
 
         # logger.info(f"\n{np.sum(best_ind.genome==problem_instance.classes)/len(problem_instance.labels)}")
         
         
+        tfpn=metrics.clustering_tfpn(problem_instance.classes,compute_classifications(particles[global_best_particle].best_position,problem_instance.points))
+        logger.info(f"Precision: {metrics.precision(tfpn['tp'],tfpn['fp'])}")
         logger.info(f"Adjusted Rand Index: {sklearn.metrics.adjusted_rand_score(problem_instance.classes,compute_classifications(particles[global_best_particle].best_position,problem_instance.points))}")
         # logger.info(f"\n{sklearn.metrics.classification_report(problem_instance.classes,compute_classifications(particles[global_best_particle].best_position,problem_instance.points))}")
+
         logger.info(f"\n{df}")
         self.save_results(df)

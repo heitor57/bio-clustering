@@ -10,16 +10,16 @@ algorithms:
   ga:
     mutation_policy: "UniformRandomSolutionSpace"
     cross_policy: "BLXab"
-    selection_policy: "RankRoulette"
+    selection_policy: "Roulette"
     population_size: 50 # Population size
     num_generations: 100 # Number of generations
-    cross_rate: 0.8 # Rate of individuals who are going to be crossed instead of being preserved from previous generation, commonly it is going to stay in 1.0 but to be more flexible it is presented as a variable
+    cross_rate: 1 # Rate of individuals who are going to be crossed instead of being preserved from previous generation, commonly it is going to stay in 1.0 but to be more flexible it is presented as a variable
     elitism: True
-    mutation_rate: 0.05
+    mutation_rate: 0.001
   pso:
-    w: 0.72
-    c_1: 1.49
-    c_2: 1.49
+    w: 0.6
+    c_1: 1.5
+    c_2: 1
     num_particles: 50
     num_iterations: 100
     topology: "VonNeumannTopology"

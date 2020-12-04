@@ -21,6 +21,7 @@ from .mutation_policy import *
 from .selection_policy import *
 from lib.ParametricAlgorithm import *
 import sklearn.metrics
+import lib.metrics as metrics
 
 
 class GA(ParametricAlgorithm):
@@ -62,14 +63,19 @@ class GA(ParametricAlgorithm):
             ind.objective_value = objective.compute(centroids=ind.genome.reshape(dimensions))
             population.append(ind)
 
-        columns = ['#Iterations','Best global fitness','Best fitness','Mean fitness', 'Median fitness', 'Worst fitness']
+        columns = ['#Iterations','Best global fitness','Best fitness','Mean fitness', 'Median fitness', 'Worst fitness','Precision']
         df = pd.DataFrame([],columns = columns)
         df = df.set_index(columns[0])
         objective_values = [ind.objective_value for ind in population]
 
         best_ind = population[np.argmin(objective_values)]
         best_objective_value = np.min(objective_values)
-        df.loc[1] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
+
+        # tfpn=metrics.clustering_tfpn(problem_instance.classes,compute_classifications(particles[global_best_particle].best_position,problem_instance.points))
+        # precision = metrics.precision(tfpn['tp'],tfpn['fp'])
+        tfpn=metrics.clustering_tfpn(problem_instance.classes,compute_classifications(best_ind.genome.reshape(dimensions),problem_instance.points))
+        precision = metrics.precision(tfpn['tp'],tfpn['fp'])
+        df.loc[1] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}',f'{precision:.4E}']
 
         logger = logging.getLogger('default')
         if logger.level <= logging.INFO:
@@ -109,12 +115,16 @@ class GA(ParametricAlgorithm):
             best_objective_value = min(np.min(objective_values),best_objective_value)
 
             best_ind = population[np.argmin(objective_values)]
-            df.loc[i] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
+            tfpn=metrics.clustering_tfpn(problem_instance.classes,compute_classifications(best_ind.genome.reshape(dimensions),problem_instance.points))
+            precision = metrics.precision(tfpn['tp'],tfpn['fp'])
+            df.loc[i] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}',f'{precision:.4E}']
 
         # print(np.sum(np.where(best_ind.genome==problem_instance.labels,True,False))/len(problem_instance.labels))
         # logger.info(f"\n{np.sum(best_ind.genome==problem_instance.classes)/len(problem_instance.labels)}")
         # logger.info(f"\n{sklearn.metrics.classification_report(problem_instance.classes,best_ind.genome)}")
         logger.info(f"Adjusted Rand Index: {sklearn.metrics.adjusted_rand_score(problem_instance.classes,compute_classifications(best_ind.genome.reshape(dimensions),problem_instance.points))}")
+        tfpn=metrics.clustering_tfpn(problem_instance.classes,compute_classifications(best_ind.genome.reshape(dimensions),problem_instance.points))
+        logger.info(f"Precision: {metrics.precision(tfpn['tp'],tfpn['fp'])}")
 
         logger.info(f"\n{df}")
         self.save_results(df)
