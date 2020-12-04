@@ -21,9 +21,9 @@ class Particle:
     #         self._velocity = np.minimum(self._velocity,self.x_max*0.1)
     
     def init_values(self,num_dimensions,objective):
-        self.position = np.random.rand(num_dimensions)*(self.x_max-self.x_min)+self.x_min
+        self.position = np.random.random_sample(num_dimensions)*(self.x_max-self.x_min)+self.x_min
         self.velocity = np.zeros(num_dimensions)
-        self.objective_value=objective.compute(self.position)
+        self.objective_value=objective.compute(centroids=self.position)
         self.best_position = copy.copy(self.position)
         self.best_objective_value = self.objective_value
 

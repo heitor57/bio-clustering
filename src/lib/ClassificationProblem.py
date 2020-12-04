@@ -17,6 +17,7 @@ class ClassificationProblem:
         self.classes = np.array([self.label_to_class[l] for l in self.labels])
 
         self.num_classes = len(set(self.classes))
+        self.num_features = len(self.points[0])
         
     def __str__(self):
         return f"""{self.points}

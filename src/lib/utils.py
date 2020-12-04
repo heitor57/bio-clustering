@@ -10,7 +10,7 @@ from tqdm import tqdm
 import numpy as np
 
 import lib.utils as utils
-from lib.PSO import PSO
+from lib.pso.PSO import PSO
 from .constants import *
 
 def dict_to_list_gen(d):

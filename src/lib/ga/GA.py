@@ -41,17 +41,17 @@ class GA(ParametricAlgorithm):
         num_cross = int((self.cross_rate * self.population_size)/2)
         num_no_cross = self.population_size-2*num_cross
 
-        classification_problem = ClassificationProblem()
-        classification_problem.load(DIRS['INPUTS']+self.instance_name)
-        num_classes =classification_problem.num_classes
-        objective = InertiaObjective(classification_problem.points,num_classes)
+        problem_instance = ClassificationProblem()
+        problem_instance.load(DIRS['INPUTS']+self.instance_name)
+        num_classes =problem_instance.num_classes
+        objective = InertiaObjective(problem_instance.points,num_classes)
         cross_policy = eval(self.cross_policy)(**self.cross_policy_kwargs)
         mutation_policy = eval(self.mutation_policy)(self.mutation_rate,0,num_classes-1)
         
         population = []
         for i in range(self.population_size):
             ind = Individual()
-            ind.rand_genome_int(num_classes,len(classification_problem.points))
+            ind.rand_genome_int(num_classes,len(problem_instance.points))
             ind.objective_value = objective.compute(ind.genome)
             population.append(ind)
 
@@ -104,9 +104,9 @@ class GA(ParametricAlgorithm):
             best_ind = population[np.argmin(objective_values)]
             df.loc[i] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
 
-        # print(np.sum(np.where(best_ind.genome==classification_problem.labels,True,False))/len(classification_problem.labels))
-        logger.info(f"\n{np.sum(best_ind.genome==classification_problem.classes)/len(classification_problem.labels)}")
-        logger.info(f"\n{sklearn.metrics.classification_report(classification_problem.classes,best_ind.genome)}")
+        # print(np.sum(np.where(best_ind.genome==problem_instance.labels,True,False))/len(problem_instance.labels))
+        logger.info(f"\n{np.sum(best_ind.genome==problem_instance.classes)/len(problem_instance.labels)}")
+        logger.info(f"\n{sklearn.metrics.classification_report(problem_instance.classes,best_ind.genome)}")
         
 
         logger.info(f"\n{df}")
