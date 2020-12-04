@@ -105,9 +105,9 @@ class GA(ParametricAlgorithm):
             df.loc[i] = [f'{best_objective_value:.4E}',f'{np.min(objective_values):.4E}',f'{np.mean(objective_values):.4E}',f'{np.median(objective_values):.4E}',f'{np.max(objective_values):.4E}']
 
         # print(np.sum(np.where(best_ind.genome==problem_instance.labels,True,False))/len(problem_instance.labels))
-        logger.info(f"\n{np.sum(best_ind.genome==problem_instance.classes)/len(problem_instance.labels)}")
-        logger.info(f"\n{sklearn.metrics.classification_report(problem_instance.classes,best_ind.genome)}")
-        
+        # logger.info(f"\n{np.sum(best_ind.genome==problem_instance.classes)/len(problem_instance.labels)}")
+        # logger.info(f"\n{sklearn.metrics.classification_report(problem_instance.classes,best_ind.genome)}")
+        logger.info(f"Adjusted Rand Index: {sklearn.metrics.adjusted_rand_score(problem_instance.classes,best_ind.genome)}")
 
         logger.info(f"\n{df}")
         self.save_results(df)

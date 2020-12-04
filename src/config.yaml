@@ -15,14 +15,14 @@ algorithms:
     num_generations: 2000 # Number of generations
     cross_rate: 1.0 # Rate of individuals who are going to be crossed instead of being preserved from previous generation, commonly it is going to stay in 1.0 but to be more flexible it is presented as a variable
     elitism: True
-    mutation_rate: 0.0058
+    mutation_rate: 0.1
   pso:
     w: 0.72
     c_1: 1.49
     c_2: 1.49
-    num_particles: 10
+    num_particles: 50
     num_iterations: 1000
-    topology: "FullyConnectedTopology"
+    topology: "VonNeumannTopology"
 general:
   logging_level: INFO
 # CRITICAL

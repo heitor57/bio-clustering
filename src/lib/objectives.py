@@ -24,7 +24,7 @@ def _compute_centroids_and_inertia(classifications,points,num_clusters,num_featu
         if centroids_num[i] != 0:
             centroids[i] = centroids_cumulated[i]/centroids_num[i]
 
-    return _dist(classifications,points,centroids)
+    return _inertia(classifications,points,centroids)
 
 
 @jit(nopython=True)
