@@ -72,6 +72,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         sort_values(by=[('Best global fitness','mean')],ascending=True).reset_index()[tmp+['Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness',]].head(TOP_N)
     a.to_excel(writer)
     writer.close()
+    print(a)
 
 
 # print('Top mean fitness')
