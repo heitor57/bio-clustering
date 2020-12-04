@@ -11,40 +11,17 @@ import pandas as pd
 from lib.constants import *
 from lib.utils import *
 TOP_N = 15
-loader = yaml.SafeLoader
-loader.add_implicit_resolver(
-    u'tag:yaml.org,2002:float',
-    re.compile(u'''^(?:
-        [-+]?(?:[0-9][0-9_]*)\\.[0-9_]*(?:[eE][-+]?[0-9]+)?
-        |[-+]?(?:[0-9][0-9_]*)(?:[eE][-+]?[0-9]+)
-        |\\.[0-9_]+(?:[eE][-+][0-9]+)?
-        |[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*
-        |[-+]?\\.(?:inf|Inf|INF)
-        |\\.(?:nan|NaN|NAN))$''', re.X),
-    list(u'-+0123456789.'))
-parser = argparse.ArgumentParser()
-parser.add_argument('--config_file','-c',
-                    default="config.yaml",
-                    type=str,
-                    help="Configuration file.")
 
-args = parser.parse_args()
-f = open(args.config_file)
-config = yaml.load(f,Loader=loader)
-
+config = parameters_init()
 to_search = {
-    'parameters':{"c_1": [0.5,1,1.5,2],
+    'algorithms':{'pso':
+                  {"c_1": [0.5,1,1.5,2],
                   "c_2": [0.5,1,1.5,2],
                   "w": [0.4,0.6,0.8],
-                  "eid": list(range(1,NUM_EXECUTIONS+1)),
-                  "topology": ["FullyConnectedTopology",
-                               "VonNeumannTopology",
-                               "RingTopology"],
-                  "objective_name":[
-                  "RosenbrockFunction",
-                  # "ChungReynoldsFunction",
-                  ],
-                  },
+                  }},
+    'parameters':{
+        "eid": list(range(1,NUM_EXECUTIONS+1)),
+    }
 }
 
 
@@ -63,7 +40,7 @@ for combination in combinations:
 
         result_df.loc[i,keys[-1]] = v
         
-    pso = PSO(**config['parameters'])
+    pso = PSO(**config['algorithms']['pso'],**config['parameters'])
     df = pso.load_results()
     result_df.loc[i,parameters_names] = combination
     result_df.loc[i,'Best global fitness'] = df.iloc[-1]['Best global fitness']
@@ -83,7 +60,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     a=result_df.groupby(list(set(result_df.columns)-{'Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness', 'eid'})).\
         agg({i: ['mean','std'] for i in {'Best global fitness', 'Best fitness','Mean fitness','Median fitness','Worst fitness', 'eid'}}).\
         sort_values(by=[('Best global fitness','mean')],ascending=True).reset_index()[tmp+['Best global fitness','Best fitness','Mean fitness','Median fitness','Worst fitness',]].head(TOP_N)
-    open(f"../doc/{config['parameters']['objective_name']}_output.tex",'w').write(a.to_latex())
+    open(f"../doc/{config['parameters']['instance_name']}_output.tex",'w').write(a.to_latex())
 
 
 # print('Top mean fitness')
