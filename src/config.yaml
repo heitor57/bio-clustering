@@ -24,7 +24,7 @@ algorithms:
     num_iterations: 200
     topology: "VonNeumannTopology"
 general:
-  logging_level: INFO
+  logging_level: WARNING
 # CRITICAL
 # ERROR
 # WARNING
