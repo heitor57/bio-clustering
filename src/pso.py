@@ -9,7 +9,7 @@ from lib.constants import *
 
 
 config = utils.parameters_init()
-pso = PSO(**config['algorithms']['pso'],**config['parameters'])
+pso = PSO(**{**config['algorithms']['pso'],**config['parameters']})
 logging.basicConfig()
 logger = logging.getLogger('default')
 logger.setLevel(eval(f"logging.{config['general']['logging_level']}"))
