@@ -13,16 +13,20 @@ algorithms:
     selection_policy: "Roulette"
     population_size: 50 # Population size
     num_generations: 100 # Number of generations
-    cross_rate: 1.0 # Rate of individuals who are going to be crossed instead of being preserved from previous generation, commonly it is going to stay in 1.0 but to be more flexible it is presented as a variable
+    cross_rate: 0.6 # Rate of individuals who are going to be crossed instead of being preserved from previous generation, commonly it is going to stay in 1.0 but to be more flexible it is presented as a variable
     elitism: True
-    mutation_rate: 0.001
+    mutation_rate: 0.01
   pso:
-    w: 0.4
-    c_1: 1.5
-    c_2: 1.5
+    w: 0.6
+    c_1: 1
+    c_2: 1
     num_particles: 50
     num_iterations: 100
     topology: "VonNeumannTopology"
+  kmeans:
+    init: random
+    n_init: 1
+    max_iter: 100
 general:
   logging_level: INFO
 # CRITICAL
@@ -32,5 +36,5 @@ general:
 # DEBUG
 # NOTSET
 parameters:
-  instance_name: "iris.data"
+  instance_name: "wine.data"
   eid: 1

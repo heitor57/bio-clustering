@@ -15,12 +15,9 @@ name = pso.get_name()
 dfs = []
 for i in range(1,NUM_EXECUTIONS+1):
     pso.eid = i
-    # name=get_parameters_name({k: v['value'] for k,v in parameters.items()})
-    # df = pd.read_json(DIRS['RESULTS']+name+'.json')
     df = pso.load_results()
     dfs.append(df)
 df = pd.DataFrame(functools.reduce(lambda x,y: x+y,dfs))/len(dfs)
-# df = pso.load_results()
 ax.plot(df['Best global fitness'],label='Melhor aptidão global')
 ax.plot(df['Best fitness'],label='Melhor aptidão')
 ax.plot(df['Mean fitness'],label='Aptidão média')
