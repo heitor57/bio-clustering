@@ -72,3 +72,17 @@ parameters:
   instance_name: iris.data
   eid: 1
 ```
+## Experiments
+
+To execute factorial experiments, we use these following commands:
+
+```sh
+pso_make_configs.py
+pso_grid.py
+pso_grid_plot.py
+pso_plot_mean_and_best.py
+ga_make_configs.py
+ga_grid.py
+ga_grid_plot.py
+ga_plot_mean_and_best.py
+```
