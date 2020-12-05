@@ -1,4 +1,4 @@
-# Solving Clustering
+# Solving Clustering with Bioinspired Algorithms
 
 ## Genetic Algorithm
 
