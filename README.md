@@ -16,7 +16,7 @@ usage: ga.py [-h] [--config_file CONFIG_FILE]
 optional arguments:
   -h, --help            show this help message and exit
   --config_file CONFIG_FILE, -c CONFIG_FILE
-                        Configuration file.´´´
+                        Configuration file.```
 
 ## Particle Swarm Optimization
 
@@ -33,7 +33,7 @@ usage: pso.py [-h] [--config_file CONFIG_FILE]
 optional arguments:
   -h, --help            show this help message and exit
   --config_file CONFIG_FILE, -c CONFIG_FILE
-                        Configuration file.´´´
+                        Configuration file.```
 
 ## Settings
 
