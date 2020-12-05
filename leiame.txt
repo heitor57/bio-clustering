@@ -1,0 +1,31 @@
+1. Executar o PSO:
+
+  $ python pso.py
+
+2. Executar o AG:
+
+  $ python ga.py
+
+3. Executar o k-médias:
+
+  $ python kmeans.py
+
+4. Executar o experimento fatorial completo no PSO:
+
+  $ python pso_make_configs.py
+  $ python pso_grid.py
+
+  Para visualizar em formato de gráficos e tabelas, deve-se executar:
+
+    $ python ga_grid_plot.py
+    $ python ga_plot_mean_and_Best.py
+
+5. Executar o experimento fatorial completo no AG:
+
+  $ python ga_make_configs.py
+  $ python ga_grid.py
+
+  Para visualizar em formato de gráficos e tabelas, deve-se executar:
+
+    $ python pso_grid_plot.py
+    $ python pso_plot_mean_and_best.py
