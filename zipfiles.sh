@@ -1,2 +1,2 @@
 #!/bin/bash
-zip -r HeitorWerneck.zip README.md doc/doc.pdf src/**
+zip -r FelipeFHeitorThales.zip README.md doc/doc.pdf src/**
