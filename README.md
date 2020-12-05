@@ -1,4 +1,4 @@
-# Solving Clustering
+# Solving Clustering with Bioinspired Algorithms
 
 ## Genetic Algorithm
 
@@ -16,7 +16,8 @@ usage: ga.py [-h] [--config_file CONFIG_FILE]
 optional arguments:
   -h, --help            show this help message and exit
   --config_file CONFIG_FILE, -c CONFIG_FILE
-                        Configuration file.´´´
+                        Configuration file.
+```
 
 ## Particle Swarm Optimization
 
@@ -33,9 +34,11 @@ usage: pso.py [-h] [--config_file CONFIG_FILE]
 optional arguments:
   -h, --help            show this help message and exit
   --config_file CONFIG_FILE, -c CONFIG_FILE
-                        Configuration file.´´´
-
+                        Configuration file.
+```
 ## Settings
+
+Change the yaml config file to change policies, variables and others things of algorithms.
 
 ```yaml
 cross_policy:
@@ -68,4 +71,18 @@ general:
 parameters:
   instance_name: iris.data
   eid: 1
+```
+## Experiments
+
+To execute factorial experiments, we use these following commands:
+
+```sh
+pso_make_configs.py
+pso_grid.py
+pso_grid_plot.py
+pso_plot_mean_and_best.py
+ga_make_configs.py
+ga_grid.py
+ga_grid_plot.py
+ga_plot_mean_and_best.py
 ```
